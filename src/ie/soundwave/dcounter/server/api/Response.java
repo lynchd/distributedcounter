@@ -1,4 +1,6 @@
 package ie.soundwave.dcounter.server.api;
 
-public class CounterResponse {
+public class CounterResponse 
+{
+  
 }

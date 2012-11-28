@@ -6,10 +6,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Client {
-	private Socket 				socket;
+    private Socket 				      socket;
     private ObjectOutputStream 	outStream;
     private ObjectInputStream  	inStream;
-    private Configuration 		configuration;
+    private Configuration 		  configuration;
     
     public Client(Configuration configuration) {
     	this.configuration = configuration;

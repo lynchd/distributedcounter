@@ -15,8 +15,8 @@ public class Server extends Thread
     
     private Configuration 		configuration;
     private ServerSocket  		serverSocket; 
-    private RequestHandler	    requestHandler;
-    private boolean 			isRunning;
+    private RequestHandler	  requestHandler;
+    private boolean 			    isRunning;
     
     public Server(Configuration config, RequestHandler requestHandler) {
     	configuration 		= config;
