@@ -1,12 +1,19 @@
-public abstract class ScheduledReplication extends Thread implements Replicate
+package ie.soundwave.dcounter.server.replicate;
+
+import org.apache.log4j.Logger;
+import ie.soundwave.dcounter.server.state.NodeState;
+
+public abstract class ScheduledReplication extends Thread implements Replication
 {
-  private State   state;
-  private int     intervalSeconds;
-  private int     secondsUntilFlush;
-  private boolean isRunning;
+  protected static Logger logger = Logger.getLogger(ScheduledReplication.class);	
   
-  private static int ONE_SECOND = 1000;
+  private static final int ONE_SECOND_MS=1000;
   
+  protected NodeState state;
+  private   int       intervalSeconds;
+  private   int       secondsUntilFlush;
+  private   boolean	  isRunning;
+ 
   public ScheduledReplication(int intervalSeconds) 
   {
     this.intervalSeconds = intervalSeconds;
@@ -14,36 +21,38 @@ public abstract class ScheduledReplication extends Thread implements Replicate
     isRunning = false;
   }
   
-  public void isRunning() {
+  public boolean isRunning() {
     return isRunning;
   }
   
-  public abstract void startReplication() {
+  public void startReplication() 
+  {
     start();
   }
   
-  public abstract void stopReplication() {
-    stop();
+  public void stopReplication() 
+  {
     isRunning = false;
   }
 
   public abstract void flush();
   
-  public void setState(State state) {
+  @Override
+  public void setState(NodeState state) {
     this.state = state;
   }
   
   public void run() {
     isRunning = true;  
     while (isRunning) {
-      waitThenFlush()
+      waitThenFlush();
     }    
   }
   
   public void waitThenFlush() {
     while(secondsUntilFlush>0) {
       try {
-        Thread.sleep(ONE_SECOND);
+        Thread.sleep(intervalSeconds*ONE_SECOND_MS);
       }
       catch(Exception ex) {
           // Ignoring this

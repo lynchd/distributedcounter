@@ -1,11 +1,7 @@
 package ie.soundwave.dcounter.sockets;
 
-import java.net.ConnectException;
-
 import ie.soundwave.dcounter.configuration.Configuration;
-import ie.soundwave.dcounter.configuration.DefaultConfiguration;
-
-import mockit.Mock;
+import ie.soundwave.dcounter.configuration.NodeConfiguration;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,11 +24,13 @@ public class ClientServerSocketTests extends TestCase
 	@Test public void test_ClientAndServer_GivenEverythingOk_EchoRequestInResponse()
 		throws Exception
 	{
-		Server server = new Server(DefaultConfiguration.GetInstance(), new EchoRequestHandler());
+		Configuration configuration = NodeConfiguration.buildDefaultConfiguration();
+		
+		TCPServer server = new TCPServer(configuration, new EchoRequestHandler());
 		server.start();
 		/** Spin-waits suck! */
 		while(!server.isRunning()) {}
-		Client client = new Client(DefaultConfiguration.GetInstance());
+		TCPClient client = new TCPClient(configuration.getHostName(), configuration.getPort());
 		String message = "ANYTHING";
 		
 		String echoResponse = (String)client.executeRequest(message);
@@ -42,14 +40,16 @@ public class ClientServerSocketTests extends TestCase
 	}
 	
 	@Test public void test_ClientServer_MultipleClients_MultipleEchos() {
-		Server server = new Server(DefaultConfiguration.GetInstance(), new EchoRequestHandler());
+		Configuration configuration = NodeConfiguration.buildDefaultConfiguration();
+		
+		TCPServer server = new TCPServer(configuration, new EchoRequestHandler());
 		server.start();
 		while(!server.isRunning()) {}
-		Client client1 = new Client(DefaultConfiguration.GetInstance());
+		TCPClient client1 = new TCPClient(configuration.getHostName(), configuration.getPort());
 		String message1 = "FIRST";
-		Client client2 = new Client(DefaultConfiguration.GetInstance());
+		TCPClient client2 = new TCPClient(configuration.getHostName(), configuration.getPort());
 		String message2= "SECOND";
-		Client client3 = new Client(DefaultConfiguration.GetInstance());
+		TCPClient client3 = new TCPClient(configuration.getHostName(), configuration.getPort());
 		String message3 = "THIRD";
 		
 		String echoResponse1 = (String)client1.executeRequest(message1);
@@ -64,7 +64,9 @@ public class ClientServerSocketTests extends TestCase
 	
 	
 	@Test public void test_Client_NoServer_ConnectionRefused() {
-		Client client = new Client(DefaultConfiguration.GetInstance());
+		Configuration configuration = NodeConfiguration.buildDefaultConfiguration();
+		
+		TCPClient client = new TCPClient(configuration.getHostName(), configuration.getPort());
 		
 		exception.expect(RuntimeException.class);
 		boolean exceptionThrown =false;

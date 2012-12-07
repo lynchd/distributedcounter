@@ -1,8 +1,19 @@
-public class DiskReplicate extends Thread implements Replicate 
-{ 
-  private string fileLocation;
+package ie.soundwave.dcounter.server.replicate;
 
-  public DiskReplicate(fileLocation) {
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+
+public class DiskReplication extends ScheduledReplication
+{ 
+  private String fileLocation;
+
+  public DiskReplication(int millisecondWait, 
+		  				 String fileLocation)
+  {
+	  super(millisecondWait);
       this.fileLocation = fileLocation;
   }
   
@@ -23,7 +34,7 @@ public class DiskReplicate extends Thread implements Replicate
     }  
     catch(IOException ex)
     {
-      logger.Error("Cannot flush state to disk!", ex);
+      logger.error("Cannot flush state to disk!", ex);
     }
   
   }

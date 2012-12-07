@@ -1,3 +1,5 @@
+package ie.soundwave.dcounter.server.state;
+
 public class PNCounter 
 {
   private int increments;
@@ -21,15 +23,15 @@ public class PNCounter
     decrements+=1;
   }
   
-  public void getValue() {
+  public int getValue() {
     return (increments-decrements);
   }
   
-  public void getIncrementCount() {
+  public int getIncrementCount() {
     return increments;
   }
   
-  public void getDecrementCount() {
+  public int getDecrementCount() {
     return decrements;
   }
   

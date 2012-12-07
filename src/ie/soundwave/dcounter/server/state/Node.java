@@ -1,19 +1,24 @@
+package ie.soundwave.dcounter.server.state;
+
 public class Node {
-  private string hostName;
-  private string port;  
+  private String hostName;
+  private int port;
   
-  public Node(hostName, port) {
-    this.hostName   = hostName;
-    this.port       = port;
+  public Node(String hostName, int port) {
+    this.hostName = hostName;
+    this.port = port;
   }
   
-  @Override 
-  public void hashCode() {
-    return hostName.hashCode() | port.hashCode();
+  public int getPort() {
+	  return port;
+  }
+  
+  public String getHostName() {
+	  return hostName;
   }
   
   @Override
-  public void toString() {
+  public String toString() {
     return "[" + hostName + ":" + port + "]";
   }
 }
